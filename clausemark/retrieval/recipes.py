@@ -27,7 +27,11 @@ RECIPES = [
     make_recipe("8_scoped_chunks", "Recipe 5 inside one contract", "clause", "hybrid", True, False, False, "contract"),
     make_recipe("9_scoped_parents", "Recipe 6 inside one contract", "clause", "hybrid", True, True, False, "contract"),
     make_recipe("10_scoped_references", "Recipe 7 inside one contract", "clause", "hybrid", True, True, True, "contract"),
+    make_recipe("11_scoped_no_rerank", "Recipe 4 inside one contract", "clause", "hybrid", False, False, False, "contract"),
+    make_recipe("12_scoped_no_rerank_parents", "Recipe 11 + the full clause", "clause", "hybrid", False, True, False, "contract"),
+    make_recipe("13_scoped_no_rerank_references", "Recipe 12 + references", "clause", "hybrid", False, True, True, "contract"),
 ]
+
 
 def get_recipe(name):
     for recipe in RECIPES:
@@ -37,4 +41,4 @@ def get_recipe(name):
 
 
 # The recipe the app uses to answer questions. A user always has a contract open.
-ANSWER_RECIPE = get_recipe("10_scoped_references")
+ANSWER_RECIPE = get_recipe("13_scoped_no_rerank_references")

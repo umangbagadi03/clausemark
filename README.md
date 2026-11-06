@@ -16,7 +16,6 @@ The usual "chat with a PDF" recipe does not hold up on contracts:
 ```
 question
   -> search one contract: vectors + BM25, fused with RRF
-  -> rerank with a local cross-encoder
   -> swap each match for its full clause
   -> follow references like "Section 1.4" or "Exhibit A"
   -> grade the clauses, and search once more with legal terms if they fall short
@@ -118,6 +117,7 @@ Each recipe adds one change, and the scores count characters. Scores are saved i
 | 6 | + return the full clause |
 | 7 | + cross-reference resolver |
 | 8 to 10 | Recipes 5 to 7 inside the contract that holds the answer |
+| 11 to 13 | The same inside one contract, without the reranker. The app uses 13 |
 
 Longer results find more text just by being longer. So every recipe is also scored on a fixed budget of 2,000, 5,000 and 10,000 characters.
 
