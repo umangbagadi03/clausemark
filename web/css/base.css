@@ -1,0 +1,97 @@
+:root {
+  /* The dark side: top bar and answer panel */
+  --night: #101214;
+  --night-raised: #191c1f;
+  --night-raised-more: #22262a;
+  --night-line: #2d3237;
+  --night-text: #f3f4f2;
+  --night-muted: #aeb4b9;
+  --night-faint: #7f868c;
+
+  /* The light side: the contract */
+  --desk: #e7e9ea;
+  --sheet: #ffffff;
+  --text: #16181a;
+  --text-muted: #565c61;
+  --text-faint: #6f757a;
+  --line: #d9dcde;
+
+  --marker: #ffe14a;
+  --red: #d92d20;
+  --red-on-night: #ff7a6e;
+  --blue: #1f4fd8;
+  --focus: var(--blue);
+
+  --ui-font: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --read-font: "Literata", Georgia, serif;
+  --mono-font: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--desk);
+  color: var(--text);
+  font-family: var(--ui-font);
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  flex: 1;
+  min-height: 0;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.page-error {
+  margin: 32px;
+  padding: 14px 16px;
+  border-left: 3px solid var(--red);
+  background: var(--sheet);
+}
+
+@media (max-width: 1100px) {
+  html,
+  body {
+    height: auto;
+  }
+}

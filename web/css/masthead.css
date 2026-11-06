@@ -1,0 +1,104 @@
+.topbar {
+  --focus: var(--marker);
+
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  min-height: 52px;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--night-line);
+  background: var(--night);
+  color: var(--night-text);
+}
+
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--night-text);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.wordmark-tile {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  background:
+    linear-gradient(var(--night), var(--night)) 0 3px / 100% 2px no-repeat,
+    linear-gradient(var(--night), var(--night)) 0 11px / 70% 2px no-repeat,
+    var(--marker);
+}
+
+.main-nav {
+  display: flex;
+  gap: 4px;
+}
+
+.main-nav a {
+  padding: 5px 10px;
+  border-radius: 6px;
+  color: var(--night-muted);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.main-nav a:hover {
+  color: var(--night-text);
+}
+
+.main-nav a.current {
+  background: var(--night-raised-more);
+  color: var(--night-text);
+}
+
+.contract-slot {
+  flex: 1;
+  min-width: 0;
+}
+
+.contract-picker {
+  width: 100%;
+  max-width: 460px;
+  padding: 6px 10px;
+  border: 1px solid var(--night-line);
+  border-radius: 6px;
+  background: var(--night-raised);
+  color: var(--night-text);
+  font-size: 14px;
+}
+
+.status-line {
+  color: var(--night-faint);
+  font-family: var(--mono-font);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+@media (max-width: 800px) {
+  .topbar {
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    padding: 10px 16px;
+  }
+
+  .contract-slot {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .contract-slot:empty {
+    display: none;
+  }
+
+  .contract-picker {
+    max-width: none;
+  }
+
+  .status-line {
+    display: none;
+  }
+}
