@@ -1,0 +1,349 @@
+.panel {
+  --focus: var(--marker);
+
+  overflow-y: auto;
+  background: var(--night);
+  color: var(--night-text);
+  scrollbar-color: var(--night-line) transparent;
+}
+
+.ask-form {
+  padding: 26px 24px 20px;
+}
+
+.ask-form label {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.18;
+}
+
+.ask-box {
+  border: 1px solid var(--night-line);
+  border-radius: 8px;
+  background: var(--night-raised);
+}
+
+.ask-box:focus-within {
+  border-color: var(--marker);
+}
+
+.ask-box textarea {
+  display: block;
+  width: 100%;
+  min-height: 84px;
+  padding: 12px 14px 4px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--night-text);
+  font-size: 15px;
+  line-height: 1.4;
+  resize: none;
+}
+
+.ask-box textarea::placeholder {
+  color: var(--night-faint);
+}
+
+.ask-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 8px 8px 14px;
+  color: var(--night-faint);
+  font-size: 12px;
+}
+
+.button {
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--marker);
+  color: #111111;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #fff0a0;
+}
+
+.button:disabled {
+  background: var(--night-raised-more);
+  color: var(--night-muted);
+  cursor: wait;
+}
+
+.ask-error {
+  margin-top: 10px;
+  color: var(--red-on-night);
+  font-size: 14px;
+}
+
+.panel-section {
+  padding: 18px 24px;
+  border-top: 1px solid var(--night-line);
+}
+
+.panel-section .eyebrow {
+  margin-bottom: 10px;
+  color: var(--night-faint);
+}
+
+/* Suggested questions */
+
+.question-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.question-list button {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 10px 0;
+  border: 0;
+  border-bottom: 1px solid var(--night-raised-more);
+  background: none;
+  color: var(--night-text);
+  font-size: 14.5px;
+  line-height: 1.32;
+  text-align: left;
+  cursor: pointer;
+}
+
+.question-list li:last-child button {
+  border-bottom: 0;
+}
+
+.question-list button::after {
+  content: "→";
+  color: var(--night-faint);
+}
+
+.question-list button:hover {
+  color: var(--marker);
+}
+
+.question-list button:hover::after {
+  color: var(--marker);
+}
+
+/* Waiting for the answer */
+
+.thinking {
+  padding: 22px 24px;
+  border-top: 1px solid var(--night-line);
+}
+
+.thinking p {
+  margin-bottom: 14px;
+  color: var(--night-muted);
+  font-size: 14px;
+}
+
+.thinking span {
+  display: block;
+  height: 10px;
+  margin-bottom: 9px;
+  border-radius: 3px;
+  background: var(--night-raised-more);
+  animation: thinking 1.2s ease-in-out infinite;
+}
+
+.thinking span:nth-child(3) {
+  width: 82%;
+}
+
+.thinking span:nth-child(4) {
+  width: 60%;
+}
+
+@keyframes thinking {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* The answer */
+
+.answer-points {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 16.5px;
+  line-height: 1.42;
+  letter-spacing: -0.005em;
+}
+
+.answer-points li {
+  margin-bottom: 12px;
+}
+
+.answer-points li:last-child {
+  margin-bottom: 0;
+}
+
+.cite-link {
+  min-width: 19px;
+  margin-left: 4px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 3px;
+  background: var(--marker);
+  color: #111111;
+  font-family: var(--mono-font);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 17px;
+  vertical-align: 1px;
+  cursor: pointer;
+}
+
+.cite-link:hover {
+  background: #ffffff;
+}
+
+.not-found {
+  font-size: 16.5px;
+  line-height: 1.4;
+}
+
+.not-found-hint {
+  margin-top: 6px;
+  color: var(--night-muted);
+  font-size: 14px;
+}
+
+/* Quote cards */
+
+.citation {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 12px 14px 13px;
+  border: 1px solid var(--night-line);
+  border-radius: 8px;
+  background: var(--night-raised);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.citation:hover {
+  border-color: var(--marker);
+}
+
+.citation-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--night-faint);
+  font-family: var(--mono-font);
+  font-size: 11px;
+}
+
+.citation-number {
+  min-width: 19px;
+  padding: 0 4px;
+  border-radius: 3px;
+  background: var(--marker);
+  color: #111111;
+  font-weight: 500;
+  line-height: 17px;
+  text-align: center;
+}
+
+.risk {
+  margin-left: auto;
+  font-family: var(--ui-font);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.risk.HIGH {
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--red);
+  color: #ffffff;
+}
+
+.risk.MEDIUM {
+  padding: 0 5px;
+  border: 1px solid var(--red-on-night);
+  border-radius: 3px;
+  color: var(--red-on-night);
+}
+
+.risk.LOW {
+  color: var(--night-muted);
+}
+
+.citation-quote {
+  margin-top: 9px;
+  color: var(--night-text);
+  font-family: var(--read-font);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.citation-why {
+  margin-top: 7px;
+  color: var(--night-muted);
+  font-size: 13.5px;
+  line-height: 1.38;
+}
+
+/* Agent steps */
+
+.audit summary {
+  color: var(--night-muted);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.audit ol {
+  margin: 10px 0 0;
+  padding-left: 22px;
+  color: var(--night-muted);
+  font-family: var(--mono-font);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.audit-foot {
+  margin-top: 8px;
+  color: var(--night-faint);
+  font-family: var(--mono-font);
+  font-size: 11px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thinking span {
+    animation: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .panel {
+    overflow: visible;
+  }
+}
+
+@media (max-width: 700px) {
+  .ask-form {
+    padding: 20px 16px 16px;
+  }
+
+  .panel-section,
+  .thinking {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}
