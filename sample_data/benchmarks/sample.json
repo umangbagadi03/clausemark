@@ -1,0 +1,131 @@
+{
+  "tests": [
+    {
+      "query": "How much notice must each party give to terminate for convenience?",
+      "snippets": [
+        {
+          "file_path": "sample/Harbourline_Meridian_Master_Services_Agreement.txt",
+          "span": [
+            1731,
+            1943
+          ]
+        }
+      ]
+    },
+    {
+      "query": "What is the cap on liability, and what does it not apply to?",
+      "snippets": [
+        {
+          "file_path": "sample/Harbourline_Meridian_Master_Services_Agreement.txt",
+          "span": [
+            3200,
+            3383
+          ]
+        },
+        {
+          "file_path": "sample/Harbourline_Meridian_Master_Services_Agreement.txt",
+          "span": [
+            665,
+            832
+          ]
+        }
+      ]
+    },
+    {
+      "query": "Which law governs this agreement, and where are disputes heard?",
+      "snippets": [
+        {
+          "file_path": "sample/Harbourline_Meridian_Master_Services_Agreement.txt",
+          "span": [
+            4118,
+            4276
+          ]
+        }
+      ]
+    },
+    {
+      "query": "How much notice is needed to stop the agreement from renewing?",
+      "snippets": [
+        {
+          "file_path": "sample/Harbourline_Meridian_Master_Services_Agreement.txt",
+          "span": [
+            1060,
+            1179
+          ]
+        }
+      ]
+    },
+    {
+      "query": "How much can the vendor raise its fees?",
+      "snippets": [
+        {
+          "file_path": "sample/Harbourline_Meridian_Master_Services_Agreement.txt",
+          "span": [
+            1469,
+            1605
+          ]
+        }
+      ]
+    },
+    {
+      "query": "What service credits does the client get if availability drops?",
+      "snippets": [
+        {
+          "file_path": "sample/Harbourline_Meridian_Master_Services_Agreement.txt",
+          "span": [
+            4853,
+            5005
+          ]
+        }
+      ]
+    },
+    {
+      "query": "Is the agreement exclusive?",
+      "snippets": [
+        {
+          "file_path": "sample/Harbourline_Meridian_Master_Services_Agreement.txt",
+          "span": [
+            3933,
+            4083
+          ]
+        }
+      ]
+    },
+    {
+      "query": "How long do the confidentiality duties last?",
+      "snippets": [
+        {
+          "file_path": "sample/Northgate_Calder_Mutual_NDA.txt",
+          "span": [
+            1216,
+            1355
+          ]
+        }
+      ]
+    },
+    {
+      "query": "Can a party reverse engineer a prototype?",
+      "snippets": [
+        {
+          "file_path": "sample/Northgate_Calder_Mutual_NDA.txt",
+          "span": [
+            952,
+            1045
+          ]
+        }
+      ]
+    },
+    {
+      "query": "What information is not treated as confidential?",
+      "snippets": [
+        {
+          "file_path": "sample/Northgate_Calder_Mutual_NDA.txt",
+          "span": [
+            584,
+            748
+          ]
+        }
+      ]
+    }
+  ]
+}

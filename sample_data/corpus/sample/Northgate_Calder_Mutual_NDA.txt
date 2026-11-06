@@ -1,0 +1,35 @@
+MUTUAL NON-DISCLOSURE AGREEMENT
+
+This Agreement is made between Northgate Biolabs LLC and Calder Instruments Pty Ltd. This is a made-up contract written for testing software. It does not describe real companies.
+
+1. Purpose
+
+The parties wish to discuss a possible joint development of laboratory instruments (the "Purpose") and may share confidential information for that Purpose.
+
+2. Confidential Information
+
+2.1 "Confidential Information" means information marked as confidential, or information given orally and confirmed as confidential in writing within fifteen (15) days.
+
+2.2 Confidential Information does not include information that is public without breach, that the recipient already knew, or that the recipient developed independently.
+
+3. Obligations
+
+3.1 The recipient will use Confidential Information only for the Purpose and will share it only with employees and advisers who need to know it and who are bound by similar duties.
+
+3.2 The recipient may not reverse engineer any sample or prototype received under this Agreement.
+
+3.3 The recipient may disclose Confidential Information if the law requires it, but must first give the other party prompt notice, subject to Section 2.2.
+
+4. Term
+
+4.1 This Agreement lasts for two (2) years from the date of last signature. The duties in Section 3 continue for three (3) years after it ends.
+
+4.2 On written request the recipient will return or destroy all Confidential Information within ten (10) days.
+
+5. No Licence
+
+Nothing in this Agreement gives either party a licence to the other party's intellectual property.
+
+6. Governing Law
+
+This Agreement is governed by the laws of England and Wales.
