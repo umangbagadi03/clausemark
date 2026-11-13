@@ -1,6 +1,7 @@
 import re
 
 from clausemark.chunking.clause_store import find_parent_by_label
+from clausemark.dataset.corpus import read_contract
 
 # One number like 4.1 or 4.1(b)(ii)
 ONE_NUMBER = r"\d{1,2}(?:\.\d{1,3})*(?:\([a-z0-9]+\))*"
@@ -44,11 +45,10 @@ def find_references(text):
     return unique_labels
 
 
-def add_referenced_clauses(set_name, results, read_text):
+def add_referenced_clauses(set_name, results):
     """Put each clause that a result points to right after that result.
 
-    read_text(result) returns the text of a result. There is no LLM here,
-    only regular expressions and a lookup in the same contract.
+    There is no LLM here, only regular expressions and a lookup in the same contract.
     """
     expanded = []
     seen = set()
@@ -60,7 +60,12 @@ def add_referenced_clauses(set_name, results, read_text):
         seen.add(key)
         expanded.append(result)
 
-        labels = find_references(read_text(result))[:MAX_REFERENCES_PER_CLAUSE]
+        contract_text = read_contract(set_name, result["file_path"])
+        result_text = contract_text[result["start"]:result["end"]]
+
+        labels = find_references(result_text)
+        labels = labels[:MAX_REFERENCES_PER_CLAUSE]
+
         for label in labels:
             parent = find_parent_by_label(set_name, result["file_path"], label)
             if parent is None:
