@@ -21,22 +21,32 @@ def keyword_search(set_name, scheme, question, limit, file_path):
     return vector_store.search(set_name, scheme, "bm25", query, limit, file_path)
 
 
+def score_of(pair):
+    # pair is (chunk_id, score)
+    return pair[1]
+
+
 def fuse_rankings(rankings):
     """Reciprocal Rank Fusion. A chunk scores more when it ranks high in more lists."""
     scores = {}
     chunks = {}
 
     for ranking in rankings:
-        for position, chunk in enumerate(ranking):
+        position = 0
+        for chunk in ranking:
             chunk_id = chunk["chunk_id"]
             chunks[chunk_id] = chunk
-            scores[chunk_id] = scores.get(chunk_id, 0) + 1 / (RRF_K + position + 1)
 
-    # Sort best first. sorted() is stable, so equal scores keep their first-seen order.
-    ids_by_score = sorted(scores, key=scores.get, reverse=True)
+            # The first result gets 1/61, the second 1/62, and so on
+            points = 1 / (RRF_K + position + 1)
+            scores[chunk_id] = scores.get(chunk_id, 0) + points
+            position = position + 1
+
+    # Sort best first. When two scores are equal, sorted() keeps the first-seen order.
+    pairs = sorted(scores.items(), key=score_of, reverse=True)
 
     fused = []
-    for chunk_id in ids_by_score:
+    for chunk_id, score in pairs:
         fused.append(chunks[chunk_id])
     return fused
 
