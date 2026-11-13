@@ -38,6 +38,7 @@ Rules:
 - Every point must cite at least one citation number.
 - Copy exact_quote word for word. Do not fix spelling or join separate parts.
 - Do not give character positions.
-- risk_flag: HIGH for an uncapped liability, one-sided right or short deadline. MEDIUM for a condition to watch. LOW for a normal term.
+- risk_flag HIGH: an uncapped liability, a one-sided right or a short deadline.
+- risk_flag MEDIUM: a condition to watch. risk_flag LOW: a normal term.
 - If the clauses do not answer the question, reply {"points": [], "citations": []}."""
 )

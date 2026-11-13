@@ -102,7 +102,8 @@ function makeNotes(results) {
 
   const list = el("ul");
   const items = [
-    "Recall is the share of the answer's characters that were retrieved. Precision is the share of retrieved characters that belong to the answer.",
+    "Recall is the share of the answer's characters that were retrieved.",
+    "Precision is the share of retrieved characters that belong to the answer.",
     "No LLM is involved. These numbers compare character positions with the marked answers.",
     "The 5k columns stop reading after 5,000 characters, so a recipe cannot win only by returning more text.",
     formatNumber(results[0].questions) + " questions per recipe. A dot marks the best value in a column.",

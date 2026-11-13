@@ -83,7 +83,8 @@ export function renderAnswer(container, result, actions) {
     answerSection.appendChild(makePoints(result, actions));
   } else {
     answerSection.appendChild(el("p", "not-found", "No clause in this contract answers that."));
-    answerSection.appendChild(el("p", "not-found-hint", "Nothing was verified, so no answer is shown. Try the legal term, like \"termination\" or \"indemnification\"."));
+    const hint = "Nothing was verified, so no answer is shown. Try the legal term, like \"termination\".";
+    answerSection.appendChild(el("p", "not-found-hint", hint));
   }
   container.appendChild(answerSection);
 
