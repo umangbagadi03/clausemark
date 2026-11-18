@@ -2,6 +2,8 @@
 
 Clausemark answers questions about a contract and highlights the exact words each answer comes from. It runs its retrieval on a laptop, and measures that retrieval against [LegalBench-RAG](https://arxiv.org/abs/2408.10343), a public benchmark where every question has its answer marked by character position.
 
+**Live demo:** https://clausemark.onrender.com. It searches the two sample contracts with no key. Pick a model and paste your own key for written answers. The free server sleeps when idle, so the first visit can take about a minute.
+
 ## The problem
 
 The usual "chat with a PDF" recipe does not hold up on contracts:
