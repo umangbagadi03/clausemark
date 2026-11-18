@@ -12,8 +12,40 @@ LONG_TEXT = ("1. Term\n\nThis agreement lasts for two years from the start date.
 
 
 @pytest.fixture
-def client():
+def client(monkeypatch):
+    # Most tests pretend the server has its own model
+    def has_model():
+        return True
+
+    def server_model():
+        return "server model"
+
+    monkeypatch.setattr(contract_routes, "server_has_model", has_model)
+    monkeypatch.setattr(contract_routes, "get_llm", server_model)
     return TestClient(app)
+
+
+@pytest.fixture
+def calls(monkeypatch):
+    """Records which mode answered and with which model, instead of running the agent."""
+    seen = {}
+
+    def fake_ask(set_name, path, question, llm):
+        seen["mode"] = "answer"
+        seen["llm"] = llm
+        return {"mode": "answer"}
+
+    def fake_search(set_name, path, question):
+        seen["mode"] = "search"
+        return {"mode": "search"}
+
+    def fake_make_client(provider, api_key):
+        return "client for " + provider + " with " + api_key
+
+    monkeypatch.setattr(contract_routes, "ask_contract", fake_ask)
+    monkeypatch.setattr(contract_routes, "search_contract", fake_search)
+    monkeypatch.setattr(contract_routes, "make_client", fake_make_client)
+    return seen
 
 
 @pytest.fixture
@@ -64,7 +96,7 @@ def test_empty_question_is_400(client):
 
 
 def test_ask_returns_the_result(client, monkeypatch):
-    def fake_ask(set_name, path, question):
+    def fake_ask(set_name, path, question, llm):
         return {"found": True}
 
     monkeypatch.setattr(contract_routes, "ask_contract", fake_ask)
@@ -73,7 +105,7 @@ def test_ask_returns_the_result(client, monkeypatch):
 
 
 def test_model_failure_is_503_with_its_message(client, monkeypatch):
-    def fail(set_name, path, question):
+    def fail(set_name, path, question, llm):
         raise LLMError("Gemini is busy")
 
     monkeypatch.setattr(contract_routes, "ask_contract", fail)
@@ -83,7 +115,7 @@ def test_model_failure_is_503_with_its_message(client, monkeypatch):
 
 
 def test_missing_index_is_409_with_the_fix(client, monkeypatch):
-    def fail(set_name, path, question):
+    def fail(set_name, path, question, llm):
         raise IndexNotReady("Run: python main.py index")
 
     monkeypatch.setattr(contract_routes, "ask_contract", fail)
@@ -138,3 +170,65 @@ def test_too_big_file_is_400(client):
 
 def test_benchmark_contract_cannot_be_removed(client):
     assert client.delete("/api/contract", params={"file_path": CONTRACT}).status_code == 403
+
+
+def ask_body(provider="", api_key=""):
+    return {"file_path": CONTRACT, "question": "How long?", "provider": provider, "api_key": api_key}
+
+
+def test_no_choice_uses_the_server_model(client, calls):
+    client.post("/api/ask", json=ask_body())
+    assert calls["mode"] == "answer"
+    assert calls["llm"] == "server model"
+
+
+def test_search_choice_skips_the_model(client, calls):
+    client.post("/api/ask", json=ask_body(provider="search"))
+    assert calls["mode"] == "search"
+
+
+def test_no_server_model_and_no_key_means_search_only(client, calls, monkeypatch):
+    def no_model():
+        return False
+
+    monkeypatch.setattr(contract_routes, "server_has_model", no_model)
+    client.post("/api/ask", json=ask_body())
+    assert calls["mode"] == "search"
+
+
+def test_visitor_key_builds_a_model_for_this_request(client, calls):
+    client.post("/api/ask", json=ask_body(provider="gemini", api_key="  visitor-key  "))
+    assert calls["mode"] == "answer"
+    assert calls["llm"] == "client for gemini with visitor-key"
+
+
+def test_key_for_an_unknown_provider_is_400(client, calls):
+    response = client.post("/api/ask", json=ask_body(provider="ollama", api_key="visitor-key"))
+    assert response.status_code == 400
+
+
+def test_key_never_comes_back_in_an_error(client, monkeypatch):
+    def fail(set_name, path, question, llm):
+        raise LLMError("Provider said: bad key secret-123-key")
+
+    def fake_make_client(provider, api_key):
+        return "client"
+
+    monkeypatch.setattr(contract_routes, "make_client", fake_make_client)
+    monkeypatch.setattr(contract_routes, "ask_contract", fail)
+    response = client.post("/api/ask", json=ask_body(provider="openai", api_key="secret-123-key"))
+    assert response.status_code == 503
+    assert "secret-123-key" not in response.text
+    assert "[your key]" in response.json()["detail"]
+
+
+def test_uploads_can_be_turned_off(client, monkeypatch):
+    monkeypatch.setattr(contract_routes.config, "ALLOW_UPLOADS", False)
+    assert upload(client, "deal.txt", LONG_TEXT).status_code == 403
+    assert client.delete("/api/contract", params={"file_path": CONTRACT}).status_code == 403
+
+
+def test_status_says_what_the_server_can_do(client):
+    status = client.get("/api/status").json()
+    assert "server_model" in status
+    assert "allow_uploads" in status

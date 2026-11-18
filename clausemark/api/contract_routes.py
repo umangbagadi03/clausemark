@@ -1,13 +1,14 @@
 from fastapi import APIRouter, HTTPException, UploadFile
 
 from clausemark import config
-from clausemark.agent.ask import IndexNotReady, ask_contract
+from clausemark.agent.ask import IndexNotReady, ask_contract, search_contract
 from clausemark.api.schemas import AskRequest
 from clausemark.chunking.clause_store import get_parents
 from clausemark.dataset import corpus
 from clausemark.ingestion.parsers import UploadError
 from clausemark.ingestion.pipeline import add_contract, remove_contract
 from clausemark.llm.errors import LLMError
+from clausemark.llm.provider import VISITOR_PROVIDERS, get_llm, make_client, server_has_model
 
 router = APIRouter(prefix="/api")
 
@@ -58,8 +59,15 @@ def get_contract(file_path: str):
     }
 
 
+def require_uploads_allowed():
+    if not config.ALLOW_UPLOADS:
+        raise HTTPException(status_code=403, detail="Uploads are turned off on this server")
+
+
 @router.post("/contracts")
 def upload_contract(file: UploadFile):
+    require_uploads_allowed()
+
     # Read one byte past the limit, so a huge file is not read into memory just to reject it
     data = file.file.read(config.MAX_UPLOAD_BYTES + 1)
 
@@ -73,6 +81,7 @@ def upload_contract(file: UploadFile):
 
 @router.delete("/contract")
 def delete_contract(file_path: str):
+    require_uploads_allowed()
     require_known_contract(file_path)
 
     try:
@@ -92,9 +101,39 @@ def ask(request: AskRequest):
         raise HTTPException(status_code=400, detail="Write a question first")
 
     set_name = corpus.set_of_contract(config.ACTIVE_SET, request.file_path)
+    api_key = request.api_key.strip()
+
     try:
-        return ask_contract(set_name, request.file_path, question)
+        llm = choose_model(request.provider, api_key)
+        if llm is None:
+            return search_contract(set_name, request.file_path, question)
+        return ask_contract(set_name, request.file_path, question, llm)
     except IndexNotReady as error:
         raise HTTPException(status_code=409, detail=str(error))
     except LLMError as error:
-        raise HTTPException(status_code=503, detail=str(error))
+        raise HTTPException(status_code=503, detail=hide_key(str(error), api_key))
+
+
+def choose_model(provider, api_key):
+    """Returns the model for one question, or None for search only.
+
+    A visitor's key is used for this request only. It is never saved, logged or put in a trace.
+    """
+    if provider == "search":
+        return None
+
+    if api_key:
+        if provider not in VISITOR_PROVIDERS:
+            raise HTTPException(status_code=400, detail="Choose Gemini, Claude or OpenAI for your key")
+        return make_client(provider, api_key)
+
+    if server_has_model():
+        return get_llm()
+    return None
+
+
+def hide_key(message, api_key):
+    """Provider errors can quote part of a key. Remove it before the message leaves the server."""
+    if api_key:
+        message = message.replace(api_key, "[your key]")
+    return message

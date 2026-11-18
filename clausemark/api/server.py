@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from clausemark import config
 from clausemark.api import contract_routes
 from clausemark.evaluation.compare import load_answer_result, load_results
-from clausemark.llm.provider import pick_provider_name
+from clausemark.llm.provider import pick_provider_name, server_has_model
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 
@@ -21,11 +21,19 @@ async def always_revalidate(request, call_next):
     return response
 
 
+def server_model_name():
+    if not server_has_model():
+        return ""
+    return pick_provider_name()
+
+
 @app.get("/api/status")
 def status():
     return {
-        "provider": pick_provider_name(),
+        "provider": server_model_name(),
+        "server_model": server_has_model(),
         "active_set": config.ACTIVE_SET,
+        "allow_uploads": config.ALLOW_UPLOADS,
     }
 
 
