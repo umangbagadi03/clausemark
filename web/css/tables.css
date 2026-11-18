@@ -4,21 +4,21 @@
 }
 
 .ledger {
-  max-width: 1080px;
+  max-width: 1088px;
   margin: 0 auto;
   padding: 40px 32px 64px;
 }
 
 .ledger h1 {
-  font-size: 34px;
+  font-size: 32px;
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   line-height: 1.1;
 }
 
 .ledger-intro {
   max-width: 640px;
-  margin-top: 10px;
+  margin-top: 8px;
   color: var(--text-muted);
   font-size: 16px;
 }
@@ -26,13 +26,13 @@
 .ledger-tools {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   margin: 24px 0 12px;
 }
 
 .ledger-tools input,
 .ledger-tools select {
-  padding: 8px 11px;
+  padding: 8px 12px;
   border: 1px solid #c3c7ca;
   border-radius: 6px;
   background: var(--sheet);
@@ -48,7 +48,7 @@
 .upload-button {
   position: relative;
   margin-left: auto;
-  padding: 8px 14px;
+  padding: 8px 16px;
   border-radius: 6px;
   background: var(--night);
   color: var(--night-text);
@@ -112,7 +112,7 @@ td.row-action {
 }
 
 .answer-score {
-  padding: 14px 16px;
+  padding: 16px;
   background: var(--sheet);
 }
 
@@ -120,7 +120,7 @@ td.row-action {
   display: block;
   font-size: 24px;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .answer-score span {
@@ -133,9 +133,8 @@ td.row-action {
 }
 
 .answers-block h2 {
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 600;
-  letter-spacing: -0.015em;
 }
 
 .answers-block p {
@@ -146,7 +145,7 @@ td.row-action {
 .warning-note {
   max-width: 760px;
   margin-top: 20px;
-  padding: 12px 14px;
+  padding: 12px 16px;
   border-radius: 6px;
   background: var(--night);
   color: var(--night-text);
@@ -172,7 +171,7 @@ table {
 
 th,
 td {
-  padding: 11px 16px;
+  padding: 12px 16px;
   border-bottom: 1px solid #eceeef;
   text-align: left;
   vertical-align: middle;
@@ -185,7 +184,7 @@ tr:last-child td {
 thead th {
   border-bottom: 1px solid var(--line);
   color: var(--text-muted);
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -222,7 +221,7 @@ th.number {
 
 thead th.number {
   font-family: var(--ui-font);
-  font-size: 12.5px;
+  font-size: 12px;
 }
 
 td.best {
@@ -232,9 +231,9 @@ td.best {
 td.best::before {
   content: "";
   display: inline-block;
-  width: 7px;
-  height: 7px;
-  margin-right: 7px;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
   border: 1px solid var(--text);
   border-radius: 50%;
   background: var(--marker);
@@ -242,7 +241,7 @@ td.best::before {
 }
 
 td.recipe-name {
-  min-width: 250px;
+  min-width: 240px;
   font-weight: 500;
 }
 
@@ -256,11 +255,11 @@ td.recipe-name small {
 }
 
 tr.group-row td {
-  padding-top: 18px;
-  padding-bottom: 7px;
+  padding-top: 20px;
+  padding-bottom: 8px;
   border-bottom: 1px solid var(--line);
   color: var(--text-muted);
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -268,8 +267,8 @@ tr.group-row td {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
-  min-width: 170px;
+  gap: 8px;
+  min-width: 168px;
 }
 
 .bar-track {
@@ -292,8 +291,8 @@ tr.group-row td {
 }
 
 .method-notes {
-  max-width: 660px;
-  margin-top: 30px;
+  max-width: 640px;
+  margin-top: 32px;
 }
 
 .method-notes h2 {
@@ -304,12 +303,12 @@ tr.group-row td {
 
 .method-notes ul {
   margin: 0;
-  padding-left: 18px;
+  padding-left: 20px;
   color: var(--text-muted);
 }
 
 .method-notes li {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 @media (max-width: 1100px) {

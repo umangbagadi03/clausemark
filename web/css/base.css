@@ -79,12 +79,12 @@ textarea {
 .eyebrow {
   font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
 }
 
 .page-error {
   margin: 32px;
-  padding: 14px 16px;
+  padding: 12px 16px;
   border-left: 3px solid var(--red);
   background: var(--sheet);
 }
