@@ -77,11 +77,43 @@
   white-space: nowrap;
 }
 
+.theme-button {
+  padding: 4px 8px;
+  border: 1px solid var(--night-line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--night-muted);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.theme-button:hover {
+  color: var(--night-text);
+}
+
+.theme-button[aria-pressed="true"] {
+  border-color: var(--night-faint);
+  background: var(--night-raised-more);
+  color: var(--night-text);
+}
+
 @media (max-width: 800px) {
   .topbar {
     flex-wrap: wrap;
     gap: 8px 16px;
     padding: 12px 16px;
+  }
+
+  /* Row one: name and theme button. Row two: links. Row three: contract. */
+  .theme-button {
+    order: 1;
+    margin-left: auto;
+  }
+
+  .main-nav {
+    order: 2;
   }
 
   .contract-slot {

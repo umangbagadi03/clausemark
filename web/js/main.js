@@ -3,6 +3,7 @@ import { clear, el } from "./dom.js";
 import { showBenchmark } from "./pages/benchmark.js";
 import { showContracts } from "./pages/contracts.js";
 import { showReview } from "./pages/review.js";
+import { setupThemeButton } from "./theme_button.js";
 
 const page = document.getElementById("page");
 const contractSlot = document.getElementById("contract-slot");
@@ -64,5 +65,6 @@ async function showStatus() {
 }
 
 window.addEventListener("hashchange", showRoute);
+setupThemeButton();
 showStatus();
 showRoute();
