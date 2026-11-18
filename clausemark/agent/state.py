@@ -5,6 +5,7 @@ class AgentState(TypedDict):
     set_name: str
     file_path: str
     question: str
+    llm: object             # the model for this question: the server's, or one made from a visitor's key
     query: str              # what we search for, can be rewritten
     searches: int           # how many search rounds we have done
     clauses: list           # the clauses found so far

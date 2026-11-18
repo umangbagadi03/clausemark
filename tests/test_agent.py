@@ -81,10 +81,10 @@ def set_indexed_chunks(monkeypatch, count):
 
 
 def use_llm(monkeypatch, llm):
+    # ask_contract uses the server's model when no model is passed in
     def give_llm():
         return llm
 
-    monkeypatch.setattr(nodes, "get_llm", give_llm)
     monkeypatch.setattr(ask, "get_llm", give_llm)
 
 
@@ -174,3 +174,25 @@ def test_each_answer_writes_a_trace(monkeypatch, searches):
         trace = json.loads(file.readline())
     assert trace["question"] == "Which law governs?"
     assert trace["citations"] == 1
+
+
+def test_a_model_passed_in_is_the_one_used(searches):
+    visitor_llm = FakeLLM()
+    result = ask.ask_contract("sample", CONTRACT, "Which law governs?", visitor_llm)
+    assert result["found"] is True
+    assert visitor_llm.calls["answer"] == 1
+
+
+def test_search_only_mode_needs_no_model(monkeypatch):
+    def fake_retrieve(set_name, query, recipe, file_path):
+        return get_parents(set_name, file_path)
+
+    monkeypatch.setattr(ask, "retrieve", fake_retrieve)
+    set_indexed_chunks(monkeypatch, 5)
+
+    result = ask.search_contract("sample", CONTRACT, "Which law governs?")
+
+    assert result["mode"] == "search"
+    assert result["citations"] == []
+    assert len(result["clauses"]) == nodes.CLAUSES_PER_SEARCH
+    assert result["model"] == ask.SEARCH_ONLY_NAME

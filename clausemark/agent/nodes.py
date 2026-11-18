@@ -10,7 +10,6 @@ from clausemark.answering.parsing import (
 )
 from clausemark.dataset.corpus import read_contract
 from clausemark.llm.errors import LLMError
-from clausemark.llm.provider import get_llm
 from clausemark.retrieval.pipeline import retrieve
 from clausemark.retrieval.recipes import ANSWER_RECIPE
 
@@ -71,7 +70,7 @@ def grade_node(state):
 
     # Grading only decides whether to search again, so a failure here should not stop the answer
     try:
-        grade = read_grade(get_llm().generate(prompts.GRADE_SYSTEM, prompt))
+        grade = read_grade(state["llm"].generate(prompts.GRADE_SYSTEM, prompt))
     except LLMError as error:
         logger.warning("Could not grade the clauses: %s", error)
         steps.append("Could not check the clauses, so used them as found")
@@ -87,7 +86,7 @@ def rewrite_node(state):
 
 def answer_node(state):
     prompt = "Question: " + state["question"] + "\n\nClauses:\n\n" + clauses_as_text(state)
-    llm = get_llm()
+    llm = state["llm"]
 
     data = parse_json_reply(llm.generate(prompts.ANSWER_SYSTEM, prompt))
     if data is None:
