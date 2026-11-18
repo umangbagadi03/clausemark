@@ -116,7 +116,7 @@
 
 .para {
   margin: 0 0 12px;
-  color: #23262a;
+  color: var(--para);
   font-family: var(--read-font);
   font-size: 16px;
   line-height: 1.6;
@@ -139,7 +139,7 @@ mark.cited {
   padding: 1px 0;
   border-radius: 2px;
   background: var(--marker);
-  color: inherit;
+  color: var(--on-marker);
   transition: box-shadow 160ms ease;
 }
 
@@ -158,7 +158,7 @@ sup.cite-number {
   padding: 0 4px;
   border-radius: 3px;
   background: var(--text);
-  color: #ffffff;
+  color: var(--sheet);
   font-family: var(--mono-font);
   font-size: 11px;
   font-weight: 500;

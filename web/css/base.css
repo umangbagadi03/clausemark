@@ -15,8 +15,14 @@
   --text-muted: #565c61;
   --text-faint: #6f757a;
   --line: #d9dcde;
+  --para: #23262a;
+  --input-line: #c3c7ca;
+  --row-line: #eceeef;
+  --row-hover: #f6f7f7;
+  --track: #eceeef;
 
   --marker: #ffe14a;
+  --on-marker: #111111;
   --red: #d92d20;
   --red-on-night: #ff7a6e;
   --blue: #1f4fd8;
@@ -25,6 +31,26 @@
   --ui-font: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
   --read-font: "Literata", Georgia, serif;
   --mono-font: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* Dark mode: only the light side changes. js/theme.js sets data-theme. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --desk: #0b0d0e;
+  --sheet: #1a1d20;
+  --text: #eceeed;
+  --text-muted: #a9afb4;
+  --text-faint: #868c91;
+  --line: #2f3439;
+  --para: #d5d8da;
+  --input-line: #3a4045;
+  --row-line: #262a2e;
+  --row-hover: #212528;
+  --track: #2a2e32;
+
+  --red: #f04438;
+  --blue: #7c9dff;
 }
 
 * {
