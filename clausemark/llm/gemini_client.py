@@ -26,14 +26,22 @@ def is_temporary(error):
     return False
 
 
+def is_bad_key(error):
+    text = str(error)
+    for sign in ("API_KEY_INVALID", "API key not valid", "PERMISSION_DENIED"):
+        if sign in text:
+            return True
+    return False
+
+
 class GeminiClient:
-    def __init__(self):
+    def __init__(self, api_key):
         self.models = [config.GEMINI_MODEL] + config.GEMINI_FALLBACK_MODELS
         self.name = "Gemini (" + config.GEMINI_MODEL + ")"
 
         # The Gemini SDK takes its timeout in milliseconds
         http_options = types.HttpOptions(timeout=config.LLM_TIMEOUT_SECONDS * 1000)
-        self.client = genai.Client(api_key=config.GEMINI_API_KEY, http_options=http_options)
+        self.client = genai.Client(api_key=api_key, http_options=http_options)
 
     def call_model(self, model, system_prompt, user_prompt):
         settings = types.GenerateContentConfig(
@@ -55,8 +63,10 @@ class GeminiClient:
                     self.name = "Gemini (" + model + ")"
                     return reply
                 except Exception as error:
+                    if is_bad_key(error):
+                        raise LLMError("Gemini did not accept the API key.") from error
                     if not is_temporary(error):
-                        logger.exception("Gemini call failed")
+                        logger.warning("Gemini call failed: %s", type(error).__name__)
                         raise LLMError("Gemini failed: " + type(error).__name__) from error
                     logger.warning("%s is not available right now", model)
 

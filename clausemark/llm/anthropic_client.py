@@ -5,11 +5,11 @@ from clausemark.llm.errors import LLMError
 
 
 class AnthropicClient:
-    def __init__(self):
+    def __init__(self, api_key):
         self.model = config.ANTHROPIC_MODEL
         self.name = "Claude (" + self.model + ")"
         self.client = anthropic.Anthropic(
-            api_key=config.ANTHROPIC_API_KEY,
+            api_key=api_key,
             timeout=config.LLM_TIMEOUT_SECONDS,
         )
 
@@ -21,6 +21,8 @@ class AnthropicClient:
                 system=system_prompt,
                 messages=[{"role": "user", "content": user_prompt}],
             )
+        except anthropic.AuthenticationError as error:
+            raise LLMError("Anthropic did not accept the API key.") from error
         except anthropic.APIError as error:
             raise LLMError("Anthropic failed: " + type(error).__name__) from error
 

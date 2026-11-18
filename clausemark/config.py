@@ -60,7 +60,8 @@ RERANKER_MODEL = "Xenova/ms-marco-MiniLM-L-12-v2"
 # Searches are cached because experiments repeat them. The limit keeps a long-running server's memory steady.
 CACHE_MAX_ITEMS = 8000
 
-# Uploads
+# Uploads. Turn them off on a public server, where every visitor would see every upload.
+ALLOW_UPLOADS = os.getenv("ALLOW_UPLOADS", "true").strip().lower() != "false"
 MAX_UPLOAD_BYTES = 5 * 1024 * 1024
 MIN_CONTRACT_CHARACTERS = 200
 

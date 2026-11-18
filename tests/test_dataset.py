@@ -1,6 +1,9 @@
 from clausemark.dataset.benchmark import limit_per_benchmark, pick_mini_questions
 from clausemark.dataset.corpus import contract_title
+import pytest
+
 from clausemark.llm import provider
+from clausemark.llm.errors import LLMError
 
 
 def make_question(file_path, number):
@@ -66,3 +69,22 @@ def test_forced_provider_wins(monkeypatch):
 def test_contract_title_is_readable():
     assert contract_title("contractnli/Grindrod%20SA%20Undertaking.txt") == "Grindrod SA Undertaking"
     assert contract_title("cuad/Big_Deal__Agreement.txt") == "Big Deal Agreement"
+
+
+def test_server_has_no_model_without_keys(monkeypatch):
+    monkeypatch.setattr(provider.config, "LLM_PROVIDER", "")
+    monkeypatch.setattr(provider.config, "GEMINI_API_KEY", "")
+    monkeypatch.setattr(provider.config, "ANTHROPIC_API_KEY", "")
+    monkeypatch.setattr(provider.config, "OPENAI_API_KEY", "")
+    assert provider.server_has_model() is False
+
+    monkeypatch.setattr(provider.config, "LLM_PROVIDER", "ollama")
+    assert provider.server_has_model() is True
+
+
+def test_make_client_needs_a_known_provider_and_a_key():
+    with pytest.raises(LLMError):
+        provider.make_client("someone", "key")
+    with pytest.raises(LLMError):
+        provider.make_client("gemini", "")
+    assert provider.make_client("openai", "visitor-key").name.startswith("OpenAI")

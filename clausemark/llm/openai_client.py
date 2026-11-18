@@ -5,11 +5,11 @@ from clausemark.llm.errors import LLMError
 
 
 class OpenAIClient:
-    def __init__(self):
+    def __init__(self, api_key):
         self.model = config.OPENAI_MODEL
         self.name = "OpenAI (" + self.model + ")"
         self.client = openai.OpenAI(
-            api_key=config.OPENAI_API_KEY,
+            api_key=api_key,
             timeout=config.LLM_TIMEOUT_SECONDS,
         )
 
@@ -24,6 +24,8 @@ class OpenAIClient:
                 model=self.model,
                 messages=messages,
             )
+        except openai.AuthenticationError as error:
+            raise LLMError("OpenAI did not accept the API key.") from error
         except openai.OpenAIError as error:
             raise LLMError("OpenAI failed: " + type(error).__name__) from error
 
