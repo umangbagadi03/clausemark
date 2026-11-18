@@ -139,7 +139,7 @@ Longer results find more text just by being longer. So every recipe is also scor
 
 The `Dockerfile` builds a public demo: the two sample contracts, no server key, and uploads turned off (`ALLOW_UPLOADS=false`), so visitors never see each other's files. The models and the search index are built into the image, so the first visitor does not wait for them. The app uses about 400 MB, which fits Render's free plan.
 
-`render.yaml` describes the service. In Render, choose New, then Blueprint, and pick this repository. Render builds the Dockerfile and deploys again on every push.
+`render.yaml` describes the service. In Render, choose New, then Blueprint, and pick this repository. Render builds the Dockerfile. It deploys again on every push once Render's GitHub app can see the repository. Without it, use Manual Deploy.
 
 A free service sleeps after 15 minutes with no visitors, so the first visit after that takes about a minute.
 
