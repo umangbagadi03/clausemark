@@ -8,3 +8,4 @@ data/
 .claude/
 notes/
 results/
+model_cache/

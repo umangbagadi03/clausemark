@@ -70,7 +70,19 @@ python3 -m venv .venv
 cp .env.example .env
 ```
 
-Set one key in `.env`. Clausemark uses the first it finds in this order: Gemini, Anthropic, OpenAI. With no key it uses a local Ollama model. `LLM_PROVIDER` can force one.
+Set one key in `.env`. Clausemark uses the first it finds in this order: Gemini, Anthropic, OpenAI. `LLM_PROVIDER` can force one, including `ollama` for a local model.
+
+## Three ways to answer
+
+The Model menu in the app picks one for each question:
+
+| Choice | What happens |
+|---|---|
+| Built-in | The server's own model from `.env` runs the full agent. Shown only when the server has one. |
+| Search only | No LLM at all. The real search runs and the matching clauses are highlighted. This is the default when the server has no key. |
+| Your own key | A visitor picks Gemini, Claude or OpenAI and pastes a key. The full agent runs with it. |
+
+A visitor's key stays in that browser tab. The server uses it for one question only. It is never written to a file, a log or a trace, and it is removed from any error message before the message is sent back.
 
 ## Try it on the sample contracts
 
@@ -121,6 +133,17 @@ Each recipe adds one change, and the scores count characters. Scores are saved i
 
 Longer results find more text just by being longer. So every recipe is also scored on a fixed budget of 2,000, 5,000 and 10,000 characters.
 
+## Deploy on Hugging Face Spaces
+
+The `Dockerfile` builds a public demo: the two sample contracts, no server key, and uploads turned off (`ALLOW_UPLOADS=false`), so visitors never see each other's files. The models and the search index are built into the image, so the first visitor does not wait for them.
+
+```bash
+.venv/bin/hf auth login
+.venv/bin/python deploy/push_to_space.py <your-hf-username>/clausemark
+```
+
+The Space builds itself from the Dockerfile in a few minutes. Free Spaces sleep after a while with no visitors, so the first visit after that is slow.
+
 ## Project layout
 
 ```
@@ -138,6 +161,7 @@ clausemark/
   api/              FastAPI routes
   utils/            the size-limited cache
 web/                plain HTML, CSS and JavaScript
+deploy/             Hugging Face Space card and upload script
 tests/              run with: .venv/bin/python -m pytest
 ```
 
