@@ -60,6 +60,17 @@ function makeAskForm() {
   return { form: form, textarea: textarea, submit: submit, errorLine: errorLine };
 }
 
+// Benchmark questions start with "Consider the ... Agreement; " to name the contract.
+// The contract is already open, so the list shows only the question after that.
+function shortQuestion(text) {
+  const marker = "; ";
+  const position = text.indexOf(marker);
+  if (text.startsWith("Consider ") && position !== -1) {
+    return text.slice(position + marker.length);
+  }
+  return text;
+}
+
 function makeQuestionList(contract, onPick) {
   const section = el("section", "panel-section");
   section.appendChild(el("h2", "eyebrow", "Try a question"));
@@ -68,7 +79,8 @@ function makeQuestionList(contract, onPick) {
   const shown = contract.questions.slice(0, 5);
   for (const item of shown) {
     const row = el("li");
-    const button = el("button", "", item.question);
+    const button = el("button", "", shortQuestion(item.question));
+    button.title = item.question;
     button.type = "button";
     button.addEventListener("click", function () {
       onPick(item.question);
