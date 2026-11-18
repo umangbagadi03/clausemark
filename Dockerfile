@@ -1,6 +1,6 @@
 FROM python:3.13-slim
 
-# Hugging Face Spaces run the app as user 1000
+# Run as a normal user, not root
 RUN useradd -m -u 1000 user
 USER user
 ENV HOME=/home/user \
@@ -23,5 +23,7 @@ ENV ACTIVE_SET=sample \
 # so the first visitor does not wait for them.
 RUN python main.py index --set sample --scheme clause
 
-EXPOSE 7860
-CMD ["uvicorn", "clausemark.api.server:app", "--host", "0.0.0.0", "--port", "7860"]
+# Render tells the app which port to use in PORT
+ENV PORT=10000
+EXPOSE 10000
+CMD uvicorn clausemark.api.server:app --host 0.0.0.0 --port $PORT

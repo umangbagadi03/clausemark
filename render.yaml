@@ -1,0 +1,11 @@
+# Render reads this file to create the web service.
+# It builds the Dockerfile, so the free plan needs no other setup.
+services:
+  - type: web
+    name: clausemark
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/status
+    autoDeploy: true
