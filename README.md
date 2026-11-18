@@ -133,16 +133,13 @@ Each recipe adds one change, and the scores count characters. Scores are saved i
 
 Longer results find more text just by being longer. So every recipe is also scored on a fixed budget of 2,000, 5,000 and 10,000 characters.
 
-## Deploy on Hugging Face Spaces
+## Deploy on Render
 
-The `Dockerfile` builds a public demo: the two sample contracts, no server key, and uploads turned off (`ALLOW_UPLOADS=false`), so visitors never see each other's files. The models and the search index are built into the image, so the first visitor does not wait for them.
+The `Dockerfile` builds a public demo: the two sample contracts, no server key, and uploads turned off (`ALLOW_UPLOADS=false`), so visitors never see each other's files. The models and the search index are built into the image, so the first visitor does not wait for them. The app uses about 400 MB, which fits Render's free plan.
 
-```bash
-.venv/bin/hf auth login
-.venv/bin/python deploy/push_to_space.py <your-hf-username>/clausemark
-```
+`render.yaml` describes the service. In Render, choose New, then Blueprint, and pick this repository. Render builds the Dockerfile and deploys again on every push.
 
-The Space builds itself from the Dockerfile in a few minutes. Free Spaces sleep after a while with no visitors, so the first visit after that is slow.
+A free service sleeps after 15 minutes with no visitors, so the first visit after that takes about a minute.
 
 ## Project layout
 
@@ -161,7 +158,8 @@ clausemark/
   api/              FastAPI routes
   utils/            the size-limited cache
 web/                plain HTML, CSS and JavaScript
-deploy/             Hugging Face Space card and upload script
+Dockerfile          the public demo image
+render.yaml         the Render service
 tests/              run with: .venv/bin/python -m pytest
 ```
 
