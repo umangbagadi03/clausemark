@@ -94,6 +94,85 @@
   color: var(--night-faint);
 }
 
+/* Model choice */
+
+.model-picker {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* More specific than ".ask-form label", which styles the big question heading */
+.ask-form .model-label {
+  margin: 0;
+  color: var(--night-faint);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+.model-picker select,
+.model-picker input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--night-line);
+  border-radius: 8px;
+  background: var(--night-raised);
+  color: var(--night-text);
+  font-size: 14px;
+}
+
+.model-picker input::placeholder {
+  color: var(--night-faint);
+}
+
+.model-picker select:focus,
+.model-picker input:focus {
+  border-color: var(--marker);
+  outline: 0;
+}
+
+.model-note {
+  color: var(--night-faint);
+  font-size: 12px;
+}
+
+/* Clauses found in search-only mode */
+
+.clause-list {
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.clause-list button {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 0;
+  border: 0;
+  border-bottom: 1px solid var(--night-raised-more);
+  background: none;
+  color: var(--night-text);
+  font-size: 14px;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+}
+
+.clause-list button:hover {
+  color: var(--marker);
+}
+
+.clause-via {
+  flex: none;
+  color: var(--night-faint);
+  font-family: var(--mono-font);
+  font-size: 12px;
+}
+
 /* Suggested questions */
 
 .question-list {

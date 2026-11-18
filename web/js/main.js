@@ -56,7 +56,11 @@ function setName(name) {
 async function showStatus() {
   const status = await getStatus();
   const line = document.getElementById("status-line");
-  line.textContent = setName(status.active_set) + " / " + status.provider;
+  let model = "search only";
+  if (status.server_model) {
+    model = status.provider;
+  }
+  line.textContent = setName(status.active_set) + " / " + model;
 }
 
 window.addEventListener("hashchange", showRoute);

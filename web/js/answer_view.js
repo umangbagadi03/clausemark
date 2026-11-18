@@ -63,18 +63,53 @@ function makeAudit(result) {
   return section;
 }
 
-export function renderThinking(container) {
+export function renderThinking(container, searchOnly) {
   clear(container);
   const block = el("section", "thinking");
-  block.appendChild(el("p", "", "Searching clauses and checking quotes. A free API tier can take up to a minute."));
+  let words = "Searching clauses and checking quotes. A free API tier can take up to a minute.";
+  if (searchOnly) {
+    words = "Searching clauses";
+  }
+  block.appendChild(el("p", "", words));
   block.appendChild(el("span"));
   block.appendChild(el("span"));
   block.appendChild(el("span"));
   container.appendChild(block);
 }
 
+function makeClauseList(result, actions) {
+  const section = el("section", "panel-section");
+  section.appendChild(el("h2", "eyebrow", "Matching clauses"));
+
+  const list = el("ul", "clause-list");
+  for (const clause of result.clauses) {
+    const row = el("li");
+    const button = el("button", "", clause.title);
+    button.type = "button";
+    if (clause.reached_by) {
+      button.appendChild(el("span", "clause-via", "via " + clause.reached_by));
+    }
+    button.addEventListener("click", function () {
+      actions.goToClause(clause.clause_id);
+    });
+    row.appendChild(button);
+    list.appendChild(row);
+  }
+  section.appendChild(list);
+
+  const hint = "This is search only, so there is no written answer. Choose a model and add your key to get one, with every quote checked.";
+  section.appendChild(el("p", "not-found-hint", hint));
+  return section;
+}
+
 export function renderAnswer(container, result, actions) {
   clear(container);
+
+  if (result.mode === "search") {
+    container.appendChild(makeClauseList(result, actions));
+    container.appendChild(makeAudit(result));
+    return;
+  }
 
   const answerSection = el("section", "panel-section");
   answerSection.appendChild(el("h2", "eyebrow", "Answer"));

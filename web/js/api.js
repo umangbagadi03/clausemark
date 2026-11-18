@@ -30,11 +30,12 @@ export async function getContract(filePath) {
   return readJson(response);
 }
 
-export async function askContract(filePath, question) {
+export async function askContract(filePath, question, provider, apiKey) {
+  const body = { file_path: filePath, question: question, provider: provider, api_key: apiKey };
   const response = await fetch("/api/ask", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ file_path: filePath, question: question }),
+    body: JSON.stringify(body),
   });
   return readJson(response);
 }

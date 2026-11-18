@@ -1,8 +1,9 @@
 import { renderAnswer, renderThinking } from "../answer_view.js";
-import { askContract, getContract, getContracts } from "../api.js";
-import { renderContract, scrollToCitation, setActiveCitation } from "../contract_view.js";
+import { askContract, getContract, getContracts, getStatus } from "../api.js";
+import { renderContract, scrollToCitation, scrollToClause, setActiveCitation } from "../contract_view.js";
 import { makeDocMap, markDocMap } from "../doc_map.js";
 import { clear, el } from "../dom.js";
+import { makeModelPicker } from "../model_picker.js";
 
 function makeContractPicker(contracts, currentPath) {
   const picker = el("select", "contract-picker");
@@ -30,7 +31,7 @@ function findGoldSpans(contract, question) {
   return [];
 }
 
-function makeAskForm() {
+function makeAskForm(picker) {
   const form = el("form", "ask-form");
 
   const label = el("label", "", "What do you need to find in this contract?");
@@ -55,6 +56,7 @@ function makeAskForm() {
 
   form.appendChild(label);
   form.appendChild(box);
+  form.appendChild(picker.element);
   form.appendChild(errorLine);
 
   return { form: form, textarea: textarea, submit: submit, errorLine: errorLine };
@@ -94,6 +96,7 @@ function makeQuestionList(contract, onPick) {
 
 export async function showReview(page, contractSlot, requestedFile) {
   const listing = await getContracts();
+  const status = await getStatus();
 
   let filePath = requestedFile;
   if (!filePath) {
@@ -108,7 +111,8 @@ export async function showReview(page, contractSlot, requestedFile) {
   const desk = el("div", "desk");
   const map = makeDocMap(contract, desk);
 
-  const ask = makeAskForm();
+  const picker = makeModelPicker(status);
+  const ask = makeAskForm(picker);
   const answerArea = el("div");
   const questionList = makeQuestionList(contract, function (question) {
     ask.textarea.value = question;
@@ -128,6 +132,9 @@ export async function showReview(page, contractSlot, requestedFile) {
     hoverCitation: function (number) {
       setActiveCitation(desk, number);
     },
+    goToClause: function (clauseId) {
+      scrollToClause(desk, clauseId);
+    },
   };
 
   ask.form.addEventListener("submit", async function (event) {
@@ -139,18 +146,28 @@ export async function showReview(page, contractSlot, requestedFile) {
       return;
     }
 
+    const model = picker.read();
+    if (model.needsKey && !model.apiKey) {
+      ask.errorLine.textContent = "Paste your API key, or choose Search only";
+      ask.errorLine.hidden = false;
+      picker.focusKey();
+      return;
+    }
+
     ask.submit.disabled = true;
     ask.submit.textContent = "Searching";
     ask.errorLine.hidden = true;
-    renderThinking(answerArea);
+    renderThinking(answerArea, model.provider === "search");
 
     try {
-      const result = await askContract(contract.file_path, question);
+      const result = await askContract(contract.file_path, question, model.provider, model.apiKey);
       renderAnswer(answerArea, result, actions);
       renderContract(desk, contract, result, findGoldSpans(contract, question));
       markDocMap(map, result);
       if (result.citations.length > 0) {
         actions.goToCitation(result.citations[0].number);
+      } else if (result.clauses.length > 0) {
+        actions.goToClause(result.clauses[0].clause_id);
       }
     } catch (error) {
       clear(answerArea);

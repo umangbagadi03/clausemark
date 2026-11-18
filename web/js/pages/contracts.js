@@ -1,4 +1,4 @@
-import { getContracts, removeContract, uploadContract } from "../api.js";
+import { getContracts, getStatus, removeContract, uploadContract } from "../api.js";
 import { clear, el, formatNumber } from "../dom.js";
 
 function reviewLink(filePath) {
@@ -108,6 +108,7 @@ function fillSources(select, contracts) {
 
 export async function showContracts(page) {
   const listing = await getContracts();
+  const status = await getStatus();
   const contracts = listing.contracts;
 
   function reloadPage() {
@@ -133,7 +134,9 @@ export async function showContracts(page) {
 
   tools.appendChild(search);
   tools.appendChild(sourceSelect);
-  tools.appendChild(makeUploadControl(uploadError));
+  if (status.allow_uploads) {
+    tools.appendChild(makeUploadControl(uploadError));
+  }
   ledger.appendChild(tools);
   ledger.appendChild(uploadError);
 
