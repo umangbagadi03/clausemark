@@ -1,4 +1,5 @@
 from clausemark.dataset.benchmark import limit_per_benchmark, pick_mini_questions
+from clausemark.dataset.corpus import contract_title
 from clausemark.llm import provider
 
 
@@ -60,3 +61,8 @@ def test_forced_provider_wins(monkeypatch):
     monkeypatch.setattr(provider.config, "LLM_PROVIDER", "ollama")
     monkeypatch.setattr(provider.config, "GEMINI_API_KEY", "x")
     assert provider.pick_provider_name() == "ollama"
+
+
+def test_contract_title_is_readable():
+    assert contract_title("contractnli/Grindrod%20SA%20Undertaking.txt") == "Grindrod SA Undertaking"
+    assert contract_title("cuad/Big_Deal__Agreement.txt") == "Big Deal Agreement"

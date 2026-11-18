@@ -1,4 +1,5 @@
 import os
+from urllib.parse import unquote
 
 from clausemark import config
 from clausemark.dataset.benchmark import load_questions
@@ -78,7 +79,11 @@ def contract_title(file_path):
     name = os.path.basename(file_path)
     if name.lower().endswith(".txt"):
         name = name[:-4]
-    return name.replace("_", " ").strip()
+
+    # Some benchmark file names keep web encoding, like "Mutual%20NDA"
+    name = unquote(name)
+    name = name.replace("_", " ")
+    return " ".join(name.split())
 
 
 def contract_source(file_path):
